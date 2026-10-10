@@ -1,11 +1,13 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DocuChat: Talk to Any PDF</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Layout: one calm column, a large serif headline, the app's indigo-to-violet
-   gradient kept to the hero mark and the primary action only. */
 :root {
   --bg: #F7F7FB;
   --surface: #FFFFFF;
@@ -105,6 +107,7 @@ section h2 { font-size: clamp(26px, 4.5vw, 36px); margin-bottom: 18px; }
 .feats .card h3 { font-size: 16px; }
 .privacy { display: grid; gap: 10px; }
 .privacy li { margin-left: 18px; color: var(--muted); }
+.fine { font-size: 13px; }
 .cta {
   margin-top: 8px; padding: 28px; border-radius: 22px; background: var(--surface);
   border: 1px solid var(--line); display: grid; gap: 14px;
@@ -121,7 +124,8 @@ footer { border-top: 1px solid var(--line); padding-block: 24px; font-size: 14px
 }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <nav>
     <div class="brand"><span class="mark">D</span>DocuChat</div>
@@ -132,8 +136,9 @@ footer { border-top: 1px solid var(--line); padding-block: 24px; font-size: 14px
     <span class="eyebrow">Talk to any PDF</span>
     <h1>Ask your documents a question, and get the answer in seconds.</h1>
     <p class="lead">DocuChat reads your PDFs and photos of pages. Ask about marks, dates, prices, names or phone numbers, and get the exact line from your file, with its page number.</p>
-    <div class="actions">
-      <a class="btn primary" href="#get">Get DocuChat</a>
+    <div class="actions" id="heroActions">
+      <a class="btn primary" href="app/">Open web app</a>
+      <a class="btn" href="https://github.com/Vijayakannan10/docuchat-site/releases/latest/download/app-release.apk" download data-android>Get DocuChat app</a>
       <a class="btn" href="#how">See how it works</a>
     </div>
     <div class="chips">
@@ -188,13 +193,27 @@ footer { border-top: 1px solid var(--line); padding-block: 24px; font-size: 14px
   <section id="get">
     <div class="cta">
       <span class="eyebrow">Get DocuChat</span>
-      <h2>Install it on your Android phone</h2>
-      <p>Ask the person who shared this page for the latest APK file, copy it to your phone, and tap to install. Sign in with the Google account on your phone.</p>
-      <div class="actions"><a class="btn" href="#how">Back to how it works</a></div>
+      <h2>Use DocuChat</h2>
+      <p>On Android, download the app, open the file, and tap Install. On any computer or phone, open the web app in your browser.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/Vijayakannan10/docuchat-site/releases/latest/download/app-release.apk" download>Get DocuChat app</a>
+        <a class="btn" href="app/">Open web app</a>
+      </div>
+      <p class="fine">Allow installing from this source if your phone asks. The Android app needs a Google account to sign in.</p>
     </div>
   </section>
 
   <footer>DocuChat 1.0.0. Talk to any PDF.</footer>
 </div>
-
-</body></html>
+<script>
+// On Android phones, show the app download first. Elsewhere, show the web app first.
+(function () {
+  var isAndroid = /Android/i.test(navigator.userAgent);
+  var box = document.getElementById('heroActions');
+  if (!isAndroid || !box) return;
+  var apk = box.querySelector('[data-android]');
+  if (apk) box.insertBefore(apk, box.firstChild);
+})();
+</script>
+</body>
+</html>
