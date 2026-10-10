@@ -1,0 +1,213 @@
+<title>DocuChat: Talk to Any PDF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one calm column, a large serif headline, the app's indigo-to-violet
+   gradient kept to the hero mark and the primary action only. */
+:root {
+  --bg: #F7F7FB;
+  --surface: #FFFFFF;
+  --fg: #16161F;
+  --muted: #5E5E6E;
+  --line: #E3E3EE;
+  --accent: #4F46E5;
+  --accent-2: #9333EA;
+  --accent-soft: #ECEBFD;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12121A;
+    --surface: #1C1C28;
+    --fg: #F1F1F8;
+    --muted: #A6A6B8;
+    --line: #2E2E3E;
+    --accent: #8B87FF;
+    --accent-2: #B57CFF;
+    --accent-soft: #26253D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12121A;
+  --surface: #1C1C28;
+  --fg: #F1F1F8;
+  --muted: #A6A6B8;
+  --line: #2E2E3E;
+  --accent: #8B87FF;
+  --accent-2: #B57CFF;
+  --accent-soft: #26253D;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Manrope", system-ui, sans-serif;
+  line-height: 1.6;
+  padding-inline: 20px;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding-block: 28px 56px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1, h2 { font-family: "Fraunces", Georgia, serif; font-weight: 800; letter-spacing: -0.01em; }
+p { margin: 0; color: var(--muted); }
+.eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent);
+}
+nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+.mark {
+  width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; font-weight: 800;
+}
+.hero { padding-block: 56px 40px; display: grid; gap: 22px; }
+.hero h1 { font-size: clamp(36px, 7vw, 60px); line-height: 1.05; }
+.hero .lead { font-size: 18px; max-width: 36em; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-block; padding: 13px 22px; border-radius: 999px; font-weight: 700;
+  text-decoration: none; border: 1px solid var(--line); color: var(--fg); background: var(--surface);
+}
+.btn.primary {
+  border-color: transparent; color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font-size: 13px; padding: 6px 12px; border-radius: 999px;
+  background: var(--accent-soft); color: var(--accent); font-weight: 600;
+}
+section { padding-block: 36px; border-top: 1px solid var(--line); }
+section h2 { font-size: clamp(26px, 4.5vw, 36px); margin-bottom: 18px; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px;
+  display: grid; gap: 8px; min-width: 0;
+}
+.card h3 { font-size: 17px; color: var(--fg); }
+.card .n {
+  width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--accent); font-weight: 800; font-size: 14px;
+}
+.demo {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px;
+  display: grid; gap: 12px;
+}
+.bubble { padding: 12px 16px; border-radius: 16px; max-width: 86%; font-size: 15px; }
+.bubble.me { justify-self: end; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-bottom-right-radius: 4px; }
+.bubble.ai { justify-self: start; background: var(--bg); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+.feats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.feats .card h3 { font-size: 16px; }
+.privacy { display: grid; gap: 10px; }
+.privacy li { margin-left: 18px; color: var(--muted); }
+.fine { font-size: 13px; }
+.cta {
+  margin-top: 8px; padding: 28px; border-radius: 22px; background: var(--surface);
+  border: 1px solid var(--line); display: grid; gap: 14px;
+}
+footer { border-top: 1px solid var(--line); padding-block: 24px; font-size: 14px; color: var(--muted); }
+@media (max-width: 680px) {
+  .steps, .feats { grid-template-columns: 1fr; }
+  .hero { padding-block: 36px 28px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero > * { animation: rise 0.6s ease both; }
+  .hero > *:nth-child(2) { animation-delay: 0.08s; }
+  .hero > *:nth-child(3) { animation-delay: 0.16s; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>
+
+<div class="wrap">
+  <nav>
+    <div class="brand"><span class="mark">D</span>DocuChat</div>
+    <span class="chip">Android app</span>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Talk to any PDF</span>
+    <h1>Ask your documents a question, and get the answer in seconds.</h1>
+    <p class="lead">DocuChat reads your PDFs and photos of pages. Ask about marks, dates, prices, names or phone numbers, and get the exact line from your file, with its page number.</p>
+    <div class="actions" id="heroActions">
+      <a class="btn primary" href="app/">Open web app</a>
+      <a class="btn" href="https://github.com/Vijayakannan10/docuchat-site/releases/latest/download/app-release.apk" download data-android>Get DocuChat app</a>
+      <a class="btn" href="#how">See how it works</a>
+    </div>
+    <div class="chips">
+      <span class="chip">Works offline</span>
+      <span class="chip">Scan with camera</span>
+      <span class="chip">Your files stay on your phone</span>
+    </div>
+  </header>
+
+  <section id="how">
+    <span class="eyebrow">How it works</span>
+    <h2>Three steps, no typing of long documents</h2>
+    <div class="steps">
+      <div class="card"><span class="n">1</span><h3>Open a file</h3><p>Choose a PDF, pick photos of pages, or scan a page with your camera.</p></div>
+      <div class="card"><span class="n">2</span><h3>Ask a question</h3><p>Type it, or tap a suggestion like "Who wrote this?" or "Show emails".</p></div>
+      <div class="card"><span class="n">3</span><h3>Get the line</h3><p>See the answer with its page number. Copy it, or reopen the chat later from Recent files.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Example</span>
+    <h2>Like asking a person who has read the file</h2>
+    <div class="demo" aria-label="Example chat">
+      <div class="bubble me">How many pages is this?</div>
+      <div class="bubble ai">This PDF has 1 page.</div>
+      <div class="bubble me">Show phone numbers</div>
+      <div class="bubble ai">Mobile: 9XXXXXXXXX (p. 1). Numbers are shown as they appear in your file.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Features</span>
+    <h2>Built for everyday papers</h2>
+    <div class="feats">
+      <div class="card"><h3>Offline answers</h3><p>Search and answers work without internet, using the text in your file.</p></div>
+      <div class="card"><h3>Smart mode</h3><p>Turn on AI answers for harder questions. Add your own free Gemini key.</p></div>
+      <div class="card"><h3>Recent files</h3><p>Reopen any file with its chat. Search, rename, pin to the top, or delete.</p></div>
+      <div class="card"><h3>Dark mode</h3><p>Easy on the eyes at night. Your choice is kept with your account.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Privacy</span>
+    <h2>Your documents stay on your phone</h2>
+    <ul class="privacy">
+      <li>Files, page text and chats are saved only on your phone.</li>
+      <li>Sign-in uses your Google account. We store only your name, phone number and email for your profile.</li>
+      <li>Smart mode sends your question and the document text to Google only when you turn it on.</li>
+    </ul>
+  </section>
+
+  <section id="get">
+    <div class="cta">
+      <span class="eyebrow">Get DocuChat</span>
+      <h2>Use DocuChat</h2>
+      <p>On Android, download the app, open the file, and tap Install. On any computer or phone, open the web app in your browser.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/Vijayakannan10/docuchat-site/releases/latest/download/app-release.apk" download>Get DocuChat app</a>
+        <a class="btn" href="app/">Open web app</a>
+      </div>
+      <p class="fine">Allow installing from this source if your phone asks. The Android app needs a Google account to sign in.</p>
+    </div>
+  </section>
+
+  <footer>DocuChat 1.0.0. Talk to any PDF.</footer>
+</div>
+<script>
+// On Android phones, show the app download first. Elsewhere, show the web app first.
+(function () {
+  var isAndroid = /Android/i.test(navigator.userAgent);
+  var box = document.getElementById('heroActions');
+  if (!isAndroid || !box) return;
+  var apk = box.querySelector('[data-android]');
+  if (apk) box.insertBefore(apk, box.firstChild);
+})();
+</script>
